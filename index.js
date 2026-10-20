@@ -1,6 +1,6 @@
 // === Constants ===
 const BASE = "https://fsa-crud-2aa9294fe819.herokuapp.com/api";
-const COHORT = ""; // Make sure to change this!
+const COHORT = "/2608"; // Make sure to change this!
 const API = BASE + COHORT;
 
 // === State ===
@@ -52,6 +52,21 @@ async function getGuests() {
     const result = await response.json();
     guests = result.data;
     render();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function addParty(party) {
+  try {
+    await fetch(API + "/events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "applocation/json",
+      },
+      body: JSON.stringify(party),
+    });
+    await getParties();
   } catch (e) {
     console.error(e);
   }
@@ -113,8 +128,8 @@ function GuestList() {
   const $ul = document.createElement("ul");
   const guestsAtParty = guests.filter((guest) =>
     rsvps.find(
-      (rsvp) => rsvp.guestId === guest.id && rsvp.eventId === selectedParty.id
-    )
+      (rsvp) => rsvp.guestId === guest.id && rsvp.eventId === selectedParty.id,
+    ),
   );
 
   // Simple components can also be created anonymously:
