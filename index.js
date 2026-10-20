@@ -72,6 +72,18 @@ async function addParty(party) {
   }
 }
 
+async function deleteParty(id) {
+  try {
+    await fetch(API + "/events" + id, {
+      method: "DELETE",
+    });
+    selectedParty = undefined;
+    await getParties();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 // === Components ===
 
 /** Party name that shows more details about the party when clicked */
