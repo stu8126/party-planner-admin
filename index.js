@@ -1,6 +1,6 @@
 // === Constants ===
 const BASE = "https://fsa-crud-2aa9294fe819.herokuapp.com/api";
-const COHORT = "/2608"; // Make sure to change this!
+const COHORT = ""; // Make sure to change this!
 const API = BASE + COHORT;
 
 // === State ===
@@ -57,12 +57,13 @@ async function getGuests() {
   }
 }
 
+/** Creates a party via the API */
 async function addParty(party) {
   try {
     await fetch(API + "/events", {
       method: "POST",
       headers: {
-        "Content-Type": "applocation/json",
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(party),
     });
@@ -72,9 +73,10 @@ async function addParty(party) {
   }
 }
 
+/** Deletes the party with the given ID via the API */
 async function deleteParty(id) {
   try {
-    await fetch(API + "/events" + id, {
+    await fetch(API + "/events/" + id, {
       method: "DELETE",
     });
     selectedParty = undefined;
@@ -129,8 +131,12 @@ function SelectedParty() {
     <address>${selectedParty.location}</address>
     <p>${selectedParty.description}</p>
     <GuestList></GuestList>
+    <button>Delete party</button>
   `;
   $party.querySelector("GuestList").replaceWith(GuestList());
+
+  const $delete = $party.querySelector("button");
+  $delete.addEventListener("click", () => deleteParty(selectedParty.id));
 
   return $party;
 }
@@ -155,6 +161,7 @@ function GuestList() {
   return $ul;
 }
 
+/** Form that allows users to input information about a new party */
 function NewPartyForm() {
   const $form = document.createElement("form");
   $form.innerHTML = `
