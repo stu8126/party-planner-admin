@@ -155,6 +155,42 @@ function GuestList() {
   return $ul;
 }
 
+function NewPartyForm() {
+  const $form = document.createElement("form");
+  $form.innerHTML = `
+    <label>
+      Name
+      <input name="name" required />
+    </label>
+    <label>
+      Description
+      <input name="description" required />
+    </label>
+    <label>
+      Date
+      <input name="date" type="date" required />
+    </label>
+    <label>
+      Location
+      <input name="location" required />
+    </label>
+    <button>Add party</button>
+  `;
+  $form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const data = new FormData($form);
+    const date = new Date(data.get("date")).toISOString();
+    addParty({
+      name: data.get("name"),
+      description: data.get("description"),
+      date,
+      location: data.get("location"),
+    });
+  });
+
+  return $form;
+}
+
 // === Render ===
 function render() {
   const $app = document.querySelector("#app");
